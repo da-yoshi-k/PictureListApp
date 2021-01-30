@@ -13,7 +13,7 @@ export default function PostItem() {
     // eslint-disable-next-line
     const items = Array.apply(null, Array(60)).map((v, i) => ({
       id: i,
-      src: 'https://placehold.jp/120x120.png',
+      src: 'https://placehold.jp/150x150.png',
     }));
     setDataSource(items);
   }, []);
@@ -25,7 +25,7 @@ export default function PostItem() {
         <View style={styles.postItem}>
           <Image
             style={styles.pictureImg}
-            resizeMode="cover"
+            resizeMode="contain"
             source={{ uri: item.src }}
           />
           <Text>☺ yamada taro</Text>

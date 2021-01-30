@@ -1,10 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function MyPictureScreen() {
+import CircleButton from '../components/CircleButton';
+
+export default function MyPictureScreen(props) {
+  const { navigation } = props;
   return (
     <View style={styles.container}>
       <Text>自分の写真リスト</Text>
+      <CircleButton
+        name="plus"
+        onPress={() => {
+          navigation.navigate('PostCreate');
+        }}
+      />
     </View>
   );
 }

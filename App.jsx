@@ -1,4 +1,5 @@
 import React from 'react';
+import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   CardStyleInterpolators,
@@ -6,22 +7,34 @@ import {
 } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
+import firebase from 'firebase';
 
 import PictureListScreen from './src/screens/PictureListScreen';
 import MyPictureScreen from './src/screens/MyPictureScreen';
+import PostCreateScreen from './src/screens/PostCreateScreen';
+import PostDetailScreen from './src/screens/PostDetailScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import Logo from './src/components/Logo';
+
+import { firebaseConfig } from './env';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+// expoでのAndroidのメッセージを無視
+LogBox.ignoreLogs(['Setting a timer']);
+
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 function PictureListStacks() {
   return (
     <Stack.Navigator
       initialRouteName="PictureListScreen"
       screenOptions={{
-        headerStyle: { backgroundColor: '#039be5' },
+        headerStyle: { backgroundColor: '#F5D97E' },
         headerTitleStyle: { color: '#FFFFFF' },
-        headerTitle: '写真一覧',
+        headerTitle: (props) => <Logo />,
         headerTintColor: '#FFFFFF',
         headerBackTitle: 'Back',
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -30,6 +43,8 @@ function PictureListStacks() {
       }}
     >
       <Stack.Screen name="Home" component={PictureListScreen} />
+      <Stack.Screen name="PostCreate" component={PostCreateScreen} />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
     </Stack.Navigator>
   );
 }
@@ -37,11 +52,12 @@ function PictureListStacks() {
 function MyPictureStacks() {
   return (
     <Stack.Navigator
+      // initialRouteName="PostCreateScreen"
       initialRouteName="MyPictureScreen"
       screenOptions={{
-        headerStyle: { backgroundColor: '#8CD790' },
+        headerStyle: { backgroundColor: '#F5D97E' },
         headerTitleStyle: { color: '#FFFFFF' },
-        headerTitle: '自分の投稿',
+        headerTitle: (props) => <Logo />,
         headerTintColor: '#FFFFFF',
         headerBackTitle: 'Back',
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -50,6 +66,8 @@ function MyPictureStacks() {
       }}
     >
       <Stack.Screen name="Home" component={MyPictureScreen} />
+      <Stack.Screen name="PostCreate" component={PostCreateScreen} />
+      <Stack.Screen name="PostDetail" component={PostDetailScreen} />
     </Stack.Navigator>
   );
 }
@@ -59,9 +77,9 @@ function ProfileStacks() {
     <Stack.Navigator
       initialRouteName="MyPictureScreen"
       screenOptions={{
-        headerStyle: { backgroundColor: '#FFBC61' },
+        headerStyle: { backgroundColor: '#F5D97E' },
         headerTitleStyle: { color: '#FFFFFF' },
-        headerTitle: 'プロフィール',
+        headerTitle: (props) => <Logo />,
         headerTintColor: '#FFFFFF',
         headerBackTitle: 'Back',
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
