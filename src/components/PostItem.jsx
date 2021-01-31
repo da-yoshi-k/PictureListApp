@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import { func } from 'prop-types';
 
 // const imgPath = require('../../assets/sample.jpg');
 // const imgPath2 = require('../../assets/sample2.jpg');
 
-export default function PostItem() {
+export default function PostItem(props) {
   const [dataSource, setDataSource] = useState([]);
+  const { onPress } = props;
 
   useState(() => {
     // TODO 削除
@@ -22,7 +31,7 @@ export default function PostItem() {
     <FlatList
       data={dataSource}
       renderItem={({ item }) => (
-        <View style={styles.postItem}>
+        <TouchableOpacity style={styles.postItem} onPress={onPress}>
           <Image
             style={styles.pictureImg}
             resizeMode="contain"
@@ -31,13 +40,21 @@ export default function PostItem() {
           <Text>☺ yamada taro</Text>
           <Text>2021年1月24日 22:00</Text>
           <Text>投稿のタイトル</Text>
-        </View>
+        </TouchableOpacity>
       )}
       numColumns={2}
       keyExtractor={(item) => item.id}
     />
   );
 }
+
+PostItem.propTypes = {
+  onPress: func,
+};
+
+PostItem.defaultProps = {
+  onPress: null,
+};
 
 const styles = StyleSheet.create({
   postItem: {

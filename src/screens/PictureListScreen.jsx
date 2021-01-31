@@ -1,11 +1,24 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PostItem from '../components/PostItem';
 
-export default function PictureListScreen() {
+import PostItem from '../components/PostItem';
+import CircleButton from '../components/CircleButton';
+
+export default function PictureListScreen(props) {
+  const { navigation } = props;
   return (
     <View style={styles.container}>
-      <PostItem />
+      <PostItem
+        onPress={() => {
+          navigation.navigate('PostDetail');
+        }}
+      />
+      <CircleButton
+        name="plus"
+        onPress={() => {
+          navigation.navigate('PostCreate');
+        }}
+      />
     </View>
   );
 }

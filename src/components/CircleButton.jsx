@@ -7,7 +7,7 @@ export default function CircleButton(props) {
   const { style, name, onPress } = props;
   return (
     <TouchableOpacity style={[styles.circleButton, style]} onPress={onPress}>
-      <Feather name={name} size={32} color="#ffffff" />
+      <Feather name={name} size={32} color="#FFFFFF" />
     </TouchableOpacity>
   );
 }
@@ -25,7 +25,7 @@ CircleButton.defaultProps = {
 
 const styles = StyleSheet.create({
   circleButton: {
-    backgroundColor: '#467FD3',
+    backgroundColor: '#F5D97E',
     width: 64,
     height: 64,
     borderRadius: 32,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   circleButtonLabel: {
-    color: '#ffffff',
+    color: '#FFFFFF',
     fontSize: 40,
     lineHeight: 40,
   },

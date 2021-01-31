@@ -23,6 +23,18 @@ const Tab = createBottomTabNavigator();
 // expoでのAndroidのメッセージを無視
 LogBox.ignoreLogs(['Setting a timer']);
 
+const screenOptions = {
+  headerStyle: { backgroundColor: '#F5D97E' },
+  headerTitleStyle: { color: '#FFFFFF' },
+  headerTitle: (props) => <Logo />,
+  headerTitleAlign: 'center',
+  headerTintColor: '#FFFFFF',
+  headerBackTitle: 'Back',
+  cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+  gestureEnabled: true,
+  gestureDirection: 'horizontal',
+};
+
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -31,16 +43,7 @@ function PictureListStacks() {
   return (
     <Stack.Navigator
       initialRouteName="PictureListScreen"
-      screenOptions={{
-        headerStyle: { backgroundColor: '#F5D97E' },
-        headerTitleStyle: { color: '#FFFFFF' },
-        headerTitle: (props) => <Logo />,
-        headerTintColor: '#FFFFFF',
-        headerBackTitle: 'Back',
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        gestureEnabled: true,
-        gestureDirection: 'horizontal',
-      }}
+      screenOptions={screenOptions}
     >
       <Stack.Screen name="Home" component={PictureListScreen} />
       <Stack.Screen name="PostCreate" component={PostCreateScreen} />
@@ -54,18 +57,9 @@ function MyPictureStacks() {
     <Stack.Navigator
       // initialRouteName="PostCreateScreen"
       initialRouteName="MyPictureScreen"
-      screenOptions={{
-        headerStyle: { backgroundColor: '#F5D97E' },
-        headerTitleStyle: { color: '#FFFFFF' },
-        headerTitle: (props) => <Logo />,
-        headerTintColor: '#FFFFFF',
-        headerBackTitle: 'Back',
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        gestureEnabled: true,
-        gestureDirection: 'horizontal',
-      }}
+      screenOptions={screenOptions}
     >
-      <Stack.Screen name="Home" component={MyPictureScreen} />
+      <Stack.Screen name="MyHome" component={MyPictureScreen} />
       <Stack.Screen name="PostCreate" component={PostCreateScreen} />
       <Stack.Screen name="PostDetail" component={PostDetailScreen} />
     </Stack.Navigator>
@@ -76,16 +70,7 @@ function ProfileStacks() {
   return (
     <Stack.Navigator
       initialRouteName="MyPictureScreen"
-      screenOptions={{
-        headerStyle: { backgroundColor: '#F5D97E' },
-        headerTitleStyle: { color: '#FFFFFF' },
-        headerTitle: (props) => <Logo />,
-        headerTintColor: '#FFFFFF',
-        headerBackTitle: 'Back',
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        gestureEnabled: true,
-        gestureDirection: 'horizontal',
-      }}
+      screenOptions={screenOptions}
     >
       <Stack.Screen name="Home" component={ProfileScreen} />
     </Stack.Navigator>
@@ -97,7 +82,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
-          name="写真一覧"
+          name="投稿一覧"
           component={PictureListStacks}
           options={{
             tabBarIcon: () => <Feather name="grid" size={26} />,

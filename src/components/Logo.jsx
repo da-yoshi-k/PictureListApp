@@ -7,7 +7,10 @@ export default function Logo() {
   return (
     <Image
       source={logo}
-      style={{ width: 180, height: 42, marginLeft: 15, alignSelf: 'center' }}
+      style={{
+        width: 180,
+        height: 42,
+      }}
     />
   );
 }
