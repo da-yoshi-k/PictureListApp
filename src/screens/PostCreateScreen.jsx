@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import firebase from 'firebase';
+
+import Button from '../components/Button';
+import { translationErrors } from '../utils';
 
 const img = require('../../assets/sample.jpg');
 
 export default function PostCreateScreen(props) {
   const [postTitle, setPostTitle] = useState('');
   const [bodyText, setBodyText] = useState('');
+  const { navigation } = props;
 
   useEffect(() => {
     const parent = props.navigation.dangerouslyGetParent();
@@ -18,6 +23,25 @@ export default function PostCreateScreen(props) {
         tabBarVisible: true,
       });
   }, []);
+
+  function handlePress() {
+    const { currentUser } = firebase.auth();
+    const db = firebase.firestore();
+    const ref = db.collection(`users/${currentUser.uid}/posts`);
+    ref
+      .add({
+        postTitle,
+        bodyText,
+        createdAt: new Date(),
+      })
+      .then(() => {
+        navigation.goBack();
+      })
+      .catch((error) => {
+        const errorMsg = translationErrors(error.code);
+        Alert.alert(errorMsg.title, errorMsg.description);
+      });
+  }
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
@@ -50,12 +74,14 @@ export default function PostCreateScreen(props) {
           multiline
         />
       </View>
+      <Button label="投稿する" onPress={handlePress} />
     </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 32,
     paddingVertical: 10,
   },
@@ -68,17 +94,19 @@ const styles = StyleSheet.create({
   sendButton: {
     height: 48,
   },
-  postTitle: {},
+  postTitle: { paddingBottom: 10 },
   inputTitle: {
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingBottom: 4,
   },
   postBody: {
     paddingBottom: 10,
   },
   inputBody: {
+    textAlignVertical: 'top',
+    height: 100,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',
     paddingHorizontal: 10,
