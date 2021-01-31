@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import firebase from 'firebase';
 

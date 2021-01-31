@@ -95,6 +95,7 @@ export default function App() {
           component={PictureListStacks}
           options={{
             tabBarIcon: () => <Feather name="grid" size={26} />,
+            unmountOnBlur: true,
           }}
         />
         <Tab.Screen
@@ -102,6 +103,7 @@ export default function App() {
           component={MyPictureStacks}
           options={{
             tabBarIcon: () => <Feather name="image" size={26} />,
+            unmountOnBlur: true,
           }}
         />
         <Tab.Screen
@@ -109,6 +111,7 @@ export default function App() {
           component={ProfileStacks}
           options={{
             tabBarIcon: () => <Feather name="user" size={26} />,
+            unmountOnBlur: true,
           }}
         />
       </Tab.Navigator>

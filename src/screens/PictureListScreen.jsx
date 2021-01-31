@@ -1,11 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import firebase from 'firebase';
 
 import PostItem from '../components/PostItem';
 import CircleButton from '../components/CircleButton';
 
 export default function PictureListScreen(props) {
   const { navigation } = props;
+  const { currentUser } = firebase.auth();
+
   return (
     <View style={styles.container}>
       <PostItem
@@ -13,12 +16,15 @@ export default function PictureListScreen(props) {
           navigation.navigate('PostDetail');
         }}
       />
-      <CircleButton
-        name="plus"
-        onPress={() => {
-          navigation.navigate('PostCreate');
-        }}
-      />
+      {/* 投稿ボタンはログイン時にのみ表示 */}
+      {currentUser && (
+        <CircleButton
+          name="plus"
+          onPress={() => {
+            navigation.navigate('PostCreate');
+          }}
+        />
+      )}
     </View>
   );
 }
