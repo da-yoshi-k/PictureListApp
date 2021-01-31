@@ -50,7 +50,6 @@ export default function PostCreateScreen(props) {
           multiline
         />
       </View>
-      {/* <Text style={styles.sendButton}>OK</Text> */}
     </KeyboardAwareScrollView>
   );
 }

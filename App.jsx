@@ -14,6 +14,8 @@ import MyPictureScreen from './src/screens/MyPictureScreen';
 import PostCreateScreen from './src/screens/PostCreateScreen';
 import PostDetailScreen from './src/screens/PostDetailScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+import LogInScreen from './src/screens/LogInScreen';
 import Logo from './src/components/Logo';
 
 import { firebaseConfig } from './env';
@@ -23,6 +25,11 @@ const Tab = createBottomTabNavigator();
 // expoでのAndroidのメッセージを無視
 LogBox.ignoreLogs(['Setting a timer']);
 
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+// ヘッダー設定
 const screenOptions = {
   headerStyle: { backgroundColor: '#F5D97E' },
   headerTitleStyle: { color: '#FFFFFF' },
@@ -35,10 +42,7 @@ const screenOptions = {
   gestureDirection: 'horizontal',
 };
 
-if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig);
-}
-
+// 投稿一覧
 function PictureListStacks() {
   return (
     <Stack.Navigator
@@ -52,6 +56,7 @@ function PictureListStacks() {
   );
 }
 
+// 自分の投稿
 function MyPictureStacks() {
   return (
     <Stack.Navigator
@@ -66,17 +71,21 @@ function MyPictureStacks() {
   );
 }
 
+// プロフィール
 function ProfileStacks() {
   return (
     <Stack.Navigator
-      initialRouteName="MyPictureScreen"
+      initialRouteName="ProfileScreen"
       screenOptions={screenOptions}
     >
-      <Stack.Screen name="Home" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="LogIn" component={LogInScreen} />
     </Stack.Navigator>
   );
 }
 
+// アプリケーション
 export default function App() {
   return (
     <NavigationContainer>
