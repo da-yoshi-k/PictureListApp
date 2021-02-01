@@ -27,9 +27,10 @@ export default function PostCreateScreen(props) {
   function handlePress() {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
-    const ref = db.collection(`users/${currentUser.uid}/posts`);
+    const ref = db.collection(`posts`);
     ref
       .add({
+        postUser: currentUser.uid,
         postTitle,
         bodyText,
         createdAt: new Date(),

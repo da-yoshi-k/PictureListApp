@@ -16,7 +16,8 @@ export default function MyPictureScreen(props) {
     let unsubscribe = () => {};
     if (currentUser) {
       const ref = db
-        .collection(`users/${currentUser.uid}/posts`)
+        .collectionGroup('posts')
+        .where('postUser', '==', `${currentUser.uid}`)
         .orderBy('createdAt', 'desc');
       unsubscribe = ref.onSnapshot(
         (snapshot) => {
@@ -32,8 +33,9 @@ export default function MyPictureScreen(props) {
           });
           setPosts(userPosts);
         },
-        () => {
-          Alert.alert('データの読み込みに失敗しました。');
+        (error) => {
+          Alert.alert(error.toString());
+          console.log(error.toString());
         }
       );
     }
