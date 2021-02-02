@@ -8,7 +8,7 @@ import { translationErrors } from '../utils';
 
 const img = require('../../assets/sample.jpg');
 
-export default function PostCreateScreen(props) {
+export default function PostEditScreen(props) {
   const [postTitle, setPostTitle] = useState('');
   const [bodyText, setBodyText] = useState('');
   const { navigation } = props;
@@ -75,7 +75,7 @@ export default function PostCreateScreen(props) {
           multiline
         />
       </View>
-      <Button label="投稿する" onPress={handlePress} />
+      <Button label="変更内容を保存する" onPress={handlePress} />
     </KeyboardAwareScrollView>
   );
 }

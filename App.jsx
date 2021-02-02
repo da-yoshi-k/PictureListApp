@@ -13,6 +13,7 @@ import PictureListScreen from './src/screens/PictureListScreen';
 import MyPictureScreen from './src/screens/MyPictureScreen';
 import PostCreateScreen from './src/screens/PostCreateScreen';
 import PostDetailScreen from './src/screens/PostDetailScreen';
+import PostEditScreen from './src/screens/PostEditScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
@@ -52,6 +53,7 @@ function PictureListStacks() {
       <Stack.Screen name="Home" component={PictureListScreen} />
       <Stack.Screen name="PostCreate" component={PostCreateScreen} />
       <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen name="PostEdit" component={PostEditScreen} />
     </Stack.Navigator>
   );
 }
@@ -67,6 +69,7 @@ function MyPictureStacks() {
       <Stack.Screen name="MyHome" component={MyPictureScreen} />
       <Stack.Screen name="PostCreate" component={PostCreateScreen} />
       <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+      <Stack.Screen name="PostEdit" component={PostEditScreen} />
     </Stack.Navigator>
   );
 }

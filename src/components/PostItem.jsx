@@ -7,20 +7,27 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import { func, shape, string, instanceOf, arrayOf } from 'prop-types';
+import { shape, string, instanceOf, arrayOf } from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 
 import { dateToString } from '../utils';
 
 const img = require('../../assets/sample.jpg');
 
 export default function PostItem(props) {
-  const { onPress, posts } = props;
+  const { posts } = props;
+  const navigation = useNavigation();
 
   return (
     <FlatList
       data={posts}
       renderItem={({ item }) => (
-        <TouchableOpacity style={styles.postItem} onPress={onPress}>
+        <TouchableOpacity
+          style={styles.postItem}
+          onPress={() => {
+            navigation.navigate('PostDetail', { id: item.id });
+          }}
+        >
           <Image style={styles.pictureImg} resizeMode="contain" source={img} />
           <Text>☺ yamada taro</Text>
           <Text>{dateToString(item.createdAt)}</Text>
@@ -34,7 +41,6 @@ export default function PostItem(props) {
 }
 
 PostItem.propTypes = {
-  onPress: func,
   posts: arrayOf(
     shape({
       id: string,
@@ -43,10 +49,6 @@ PostItem.propTypes = {
       createdAt: instanceOf(Date),
     })
   ).isRequired,
-};
-
-PostItem.defaultProps = {
-  onPress: null,
 };
 
 const styles = StyleSheet.create({

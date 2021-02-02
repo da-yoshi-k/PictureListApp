@@ -54,12 +54,7 @@ export default function MyPictureScreen(props) {
   return (
     <View style={styles.container}>
       <Text>自分の写真リスト</Text>
-      <PostItem
-        posts={posts}
-        onPress={() => {
-          navigation.navigate('PostDetail');
-        }}
-      />
+      <PostItem posts={posts} />
       <CircleButton
         name="plus"
         onPress={() => {

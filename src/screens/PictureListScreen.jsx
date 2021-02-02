@@ -37,12 +37,7 @@ export default function PictureListScreen(props) {
 
   return (
     <View style={styles.container}>
-      <PostItem
-        posts={allPosts}
-        onPress={() => {
-          navigation.navigate('PostDetail');
-        }}
-      />
+      <PostItem posts={allPosts} />
       {/* 投稿ボタンはログイン時にのみ表示 */}
       {currentUser && (
         <CircleButton
