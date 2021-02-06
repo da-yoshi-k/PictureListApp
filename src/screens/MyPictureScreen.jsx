@@ -27,6 +27,7 @@ export default function MyPictureScreen(props) {
             if (data) {
               userPosts.push({
                 id: doc.id,
+                postImageURL: data.postImageURL,
                 postTitle: data.postTitle,
                 bodyText: data.bodyText,
                 createdAt: data.createdAt.toDate(),
@@ -55,7 +56,6 @@ export default function MyPictureScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text>自分の写真リスト</Text>
       <PostItem posts={posts} />
       <CircleButton
         name="plus"

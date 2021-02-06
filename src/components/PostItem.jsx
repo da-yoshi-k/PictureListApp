@@ -12,8 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { dateToString } from '../utils';
 
-const img = require('../../assets/sample.jpg');
-
 export default function PostItem(props) {
   const { posts } = props;
   const navigation = useNavigation();
@@ -28,9 +26,15 @@ export default function PostItem(props) {
             navigation.navigate('PostDetail', { id: item.id });
           }}
         >
-          <Image style={styles.pictureImg} resizeMode="contain" source={img} />
+          <Image
+            style={styles.pictureImg}
+            resizeMode="contain"
+            source={{ uri: item.postImageURL }}
+          />
+          <View style={styles.postTitle}>
+            <Text>{item.postTitle}</Text>
+          </View>
           <Text>☺ yamada taro</Text>
-          <Text>{item.postTitle}</Text>
           <Text>{dateToString(item.createdAt)}</Text>
         </TouchableOpacity>
       )}
@@ -44,6 +48,7 @@ PostItem.propTypes = {
   posts: arrayOf(
     shape({
       id: string,
+      postImageURL: string,
       postTitle: string,
       bodyText: string,
       createdAt: instanceOf(Date),
@@ -65,5 +70,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 160,
     height: 120,
+  },
+  postTitle: {
+    width: 150,
   },
 });

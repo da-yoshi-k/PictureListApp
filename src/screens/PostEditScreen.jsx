@@ -69,7 +69,7 @@ export default function PostEditScreen(props) {
         />
       </View>
       <View style={styles.postBody}>
-        <Text>本文</Text>
+        <Text>本文(400文字以内)</Text>
         <TextInput
           value={body}
           style={styles.inputBody}
@@ -77,6 +77,7 @@ export default function PostEditScreen(props) {
             setBody(text);
           }}
           multiline
+          maxLength={400}
         />
       </View>
       <Button label="変更を保存する" onPress={handlePress} />

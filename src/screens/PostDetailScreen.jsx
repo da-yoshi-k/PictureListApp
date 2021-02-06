@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import Button from '../components/Button';
 import { dateToString } from '../utils';
 
-const img = require('../../assets/sample.jpg');
+let postImageURL = null;
 
 export default function PostDetailScreen(props) {
   const { navigation, route } = props;
@@ -20,8 +20,12 @@ export default function PostDetailScreen(props) {
     unsubscribe = ref.onSnapshot((doc) => {
       const data = doc.data();
       if (data) {
+        data.postTitle ? data.postTitle : (data.postTitle = 'タイトルなし');
+        data.bodyText ? data.bodyText : (data.bodyText = '本文なし');
+        postImageURL = data.postImageURL;
         setPost({
           id: doc.id,
+          postImageURL: data.postImageURL,
           postUser: data.postUser,
           postTitle: data.postTitle,
           bodyText: data.bodyText,
@@ -73,11 +77,11 @@ export default function PostDetailScreen(props) {
         <Image
           style={styles.postPictureImg}
           resizeMode="contain"
-          source={img}
+          source={{ uri: postImageURL }}
         />
       </View>
       <View style={styles.postBody}>
-        <Text>{post && post.bodyText}</Text>
+        <Text style={styles.bodyText}>{post && post.bodyText}</Text>
       </View>
       <View style={styles.controlButton}>
         <Button
@@ -85,6 +89,7 @@ export default function PostDetailScreen(props) {
           onPress={() => {
             navigation.navigate('PostEdit', {
               id: post.id,
+              postImageURL: post.postImageURL,
               postTitle: post.postTitle,
               bodyText: post.bodyText,
             });
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 32,
     paddingTop: 32,
-    // paddingBottom: 500,
+    paddingBottom: 500,
   },
   postPictureImg: {
     justifyContent: 'center',
@@ -124,7 +129,10 @@ const styles = StyleSheet.create({
     color: '#666666',
   },
   postBody: {
-    paddingBottom: 10,
+    paddingBottom: 30,
+  },
+  bodyText: {
+    fontSize: 16,
   },
   controlButton: {
     flexDirection: 'row',
