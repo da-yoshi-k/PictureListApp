@@ -62,7 +62,6 @@ function PictureListStacks() {
 function MyPictureStacks() {
   return (
     <Stack.Navigator
-      // initialRouteName="PostCreateScreen"
       initialRouteName="MyPictureScreen"
       screenOptions={screenOptions}
     >

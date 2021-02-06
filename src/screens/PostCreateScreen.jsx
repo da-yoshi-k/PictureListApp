@@ -55,13 +55,14 @@ export default function PostCreateScreen(props) {
         />
       </View>
       <View style={styles.postTitle}>
-        <Text>タイトル</Text>
+        <Text>タイトル(20文字以内)</Text>
         <TextInput
           value={postTitle}
           style={styles.inputTitle}
           onChangeText={(text) => {
             setPostTitle(text);
           }}
+          maxLength={20}
         />
       </View>
       <View style={styles.postBody}>

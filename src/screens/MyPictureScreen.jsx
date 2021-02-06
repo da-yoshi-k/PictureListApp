@@ -24,12 +24,14 @@ export default function MyPictureScreen(props) {
           const userPosts = [];
           snapshot.forEach((doc) => {
             const data = doc.data();
-            userPosts.push({
-              id: doc.id,
-              postTitle: data.postTitle,
-              bodyText: data.bodyText,
-              createdAt: data.createdAt.toDate(),
-            });
+            if (data) {
+              userPosts.push({
+                id: doc.id,
+                postTitle: data.postTitle,
+                bodyText: data.bodyText,
+                createdAt: data.createdAt.toDate(),
+              });
+            }
           });
           setPosts(userPosts);
         },

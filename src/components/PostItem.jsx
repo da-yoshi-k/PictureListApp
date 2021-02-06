@@ -30,8 +30,8 @@ export default function PostItem(props) {
         >
           <Image style={styles.pictureImg} resizeMode="contain" source={img} />
           <Text>☺ yamada taro</Text>
-          <Text>{dateToString(item.createdAt)}</Text>
           <Text>{item.postTitle}</Text>
+          <Text>{dateToString(item.createdAt)}</Text>
         </TouchableOpacity>
       )}
       numColumns={2}
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: '50%',
     paddingHorizontal: 12,
     paddingVertical: 12,
-    height: 200,
+    height: 210,
   },
   pictureImg: {
     justifyContent: 'center',

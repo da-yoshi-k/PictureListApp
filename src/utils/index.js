@@ -4,7 +4,7 @@ export function dateToString(date) {
   if (!date) {
     return '';
   }
-  return format(date, 'yyyy/M/d日 HH:mm');
+  return format(date, 'yyyy/M/d HH:mm');
 }
 
 export function translationErrors(code) {

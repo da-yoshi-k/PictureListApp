@@ -9,9 +9,10 @@ import { translationErrors } from '../utils';
 const img = require('../../assets/sample.jpg');
 
 export default function PostEditScreen(props) {
-  const [postTitle, setPostTitle] = useState('');
-  const [bodyText, setBodyText] = useState('');
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { id, postTitle, bodyText } = route.params;
+  const [title, setTitle] = useState(postTitle);
+  const [body, setBody] = useState(bodyText);
 
   useEffect(() => {
     const parent = props.navigation.dangerouslyGetParent();
@@ -27,14 +28,16 @@ export default function PostEditScreen(props) {
   function handlePress() {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
-    const ref = db.collection(`posts`);
+    const ref = db.collection('posts').doc(id);
     ref
-      .add({
-        postUser: currentUser.uid,
-        postTitle,
-        bodyText,
-        createdAt: new Date(),
-      })
+      .set(
+        {
+          postUser: currentUser.uid,
+          postTitle: title,
+          bodyText: body,
+        },
+        { merge: true }
+      )
       .then(() => {
         navigation.goBack();
       })
@@ -55,27 +58,28 @@ export default function PostEditScreen(props) {
         />
       </View>
       <View style={styles.postTitle}>
-        <Text>タイトル</Text>
+        <Text>タイトル(20文字以内)</Text>
         <TextInput
-          value={postTitle}
+          value={title}
           style={styles.inputTitle}
           onChangeText={(text) => {
-            setPostTitle(text);
+            setTitle(text);
           }}
+          maxLength={20}
         />
       </View>
       <View style={styles.postBody}>
         <Text>本文</Text>
         <TextInput
-          value={bodyText}
+          value={body}
           style={styles.inputBody}
           onChangeText={(text) => {
-            setBodyText(text);
+            setBody(text);
           }}
           multiline
         />
       </View>
-      <Button label="変更内容を保存する" onPress={handlePress} />
+      <Button label="変更を保存する" onPress={handlePress} />
     </KeyboardAwareScrollView>
   );
 }

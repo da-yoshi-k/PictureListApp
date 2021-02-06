@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, ScrollView, Alert } from 'react-native';
 import firebase from 'firebase';
 
 import Button from '../components/Button';
+import { dateToString } from '../utils';
 
 const img = require('../../assets/sample.jpg');
 
@@ -18,13 +19,15 @@ export default function PostDetailScreen(props) {
     const ref = db.collection('posts').doc(id);
     unsubscribe = ref.onSnapshot((doc) => {
       const data = doc.data();
-      setPost({
-        id: doc.id,
-        postUser: data.postUser,
-        postTitle: data.postTitle,
-        bodyText: data.bodyText,
-        createdAt: data.createdAt.toDate(),
-      });
+      if (data) {
+        setPost({
+          id: doc.id,
+          postUser: data.postUser,
+          postTitle: data.postTitle,
+          bodyText: data.bodyText,
+          createdAt: data.createdAt.toDate(),
+        });
+      }
     });
     return unsubscribe;
   }, []);
@@ -32,7 +35,7 @@ export default function PostDetailScreen(props) {
   function deletePost(id) {
     if (currentUser) {
       const db = firebase.firestore();
-      const ref = db.collection('post').doc(id);
+      const ref = db.collection('posts').doc(id);
       Alert.alert('投稿を削除します', 'よろしいですか？', [
         {
           text: 'キャンセル',
@@ -42,9 +45,14 @@ export default function PostDetailScreen(props) {
           text: '削除する',
           style: 'destructive',
           onPress: () => {
-            ref.delete().catch(() => {
-              Alert.alert('削除に失敗しました');
-            });
+            ref
+              .delete()
+              .then(() => {
+                navigation.goBack();
+              })
+              .catch(() => {
+                Alert.alert('削除に失敗しました');
+              });
           },
         },
       ]);
@@ -53,7 +61,14 @@ export default function PostDetailScreen(props) {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>投稿詳細</Text>
+      <View style={styles.postTitle}>
+        <Text style={styles.postTitleText}>{post && post.postTitle}</Text>
+      </View>
+      <View style={styles.postDate}>
+        <Text style={styles.postDateText}>
+          {post && dateToString(post.createdAt)}
+        </Text>
+      </View>
       <View style={styles.postImg}>
         <Image
           style={styles.postPictureImg}
@@ -61,24 +76,29 @@ export default function PostDetailScreen(props) {
           source={img}
         />
       </View>
-      <View style={styles.postTitle}>
-        <Text>{post && post.postTitle}</Text>
-      </View>
       <View style={styles.postBody}>
         <Text>{post && post.bodyText}</Text>
       </View>
-      <Button
-        label="編集"
-        onPress={() => {
-          navigation.navigate('PostEdit', { id: post.id });
-        }}
-      />
-      <Button
-        label="削除"
-        onPress={() => {
-          deletePost(post.id);
-        }}
-      />
+      <View style={styles.controlButton}>
+        <Button
+          label="編集"
+          onPress={() => {
+            navigation.navigate('PostEdit', {
+              id: post.id,
+              postTitle: post.postTitle,
+              bodyText: post.bodyText,
+            });
+          }}
+        />
+        <Button
+          label="削除"
+          onPress={() => {
+            deletePost(post.id);
+          }}
+          buttonStyle={styles.deleteButton}
+          labelStyle={styles.deleteLabel}
+        />
+      </View>
     </ScrollView>
   );
 }
@@ -96,22 +116,26 @@ const styles = StyleSheet.create({
     width: 300,
     height: 240,
   },
-  postTitle: { paddingBottom: 10 },
-  inputTitle: {
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.2)',
-    paddingHorizontal: 10,
-    paddingBottom: 4,
+  postTitle: {
+    paddingBottom: 10,
+  },
+  postTitleText: {
+    fontSize: 20,
+    color: '#666666',
   },
   postBody: {
     paddingBottom: 10,
   },
-  inputBody: {
-    textAlignVertical: 'top',
-    height: 100,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.2)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+  controlButton: {
+    flexDirection: 'row',
+  },
+  deleteButton: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#ED5565',
+    borderWidth: 2,
+    marginLeft: 30,
+  },
+  deleteLabel: {
+    color: '#ED5565',
   },
 });
