@@ -22,7 +22,9 @@ export default function MyPictureScreen(props) {
   if (!currentUser) {
     return (
       <View style={notLoggedInStyles.container}>
-        <Text>ログインしてプロフィールを作成しよう！</Text>
+        <Text style={notLoggedInStyles.innerText}>
+          ログインしてプロフィールを作成しよう！
+        </Text>
         <TouchableOpacity
           onPress={() => {
             navigation.reset({
@@ -31,7 +33,7 @@ export default function MyPictureScreen(props) {
             });
           }}
         >
-          <Text style={notLoggedInStyles.link}>ログインはこちら</Text>
+          <Text style={notLoggedInStyles.linkText}>ログインはこちら</Text>
         </TouchableOpacity>
       </View>
     );
@@ -59,11 +61,15 @@ const styles = StyleSheet.create({
 const notLoggedInStyles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
-    paddingVertical: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  link: {
-    fontSize: 14,
+  innerText: {
+    fontSize: 18,
+    color: '#666666',
+  },
+  linkText: {
+    fontSize: 18,
     lineHeight: 24,
     color: '#FFA500',
   },

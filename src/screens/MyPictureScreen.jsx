@@ -47,9 +47,30 @@ export default function MyPictureScreen(props) {
 
   if (!currentUser) {
     return (
-      <View style={styles.container}>
-        <Text>ログインして自分の投稿を確認しよう！</Text>
-        <Text>プロフィールからユーザー登録してね</Text>
+      <View style={notLoggedInStyles.container}>
+        <Text style={notLoggedInStyles.innerText}>
+          ログインして自分の投稿を確認しよう！
+        </Text>
+        <Text style={notLoggedInStyles.innerText}>
+          プロフィールからユーザー登録してね
+        </Text>
+      </View>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <View style={emptyStyles.container}>
+        <Text style={emptyStyles.innerText}>まだ自分の投稿がありません</Text>
+        <Text style={emptyStyles.innerText}>
+          右下の＋ボタンから投稿してみよう！
+        </Text>
+        <CircleButton
+          name="plus"
+          onPress={() => {
+            navigation.navigate('PostCreate');
+          }}
+        />
       </View>
     );
   }
@@ -70,5 +91,29 @@ export default function MyPictureScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+});
+
+const emptyStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerText: {
+    fontSize: 18,
+    color: '#666666',
+  },
+});
+
+const notLoggedInStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerText: {
+    fontSize: 18,
+    color: '#666666',
   },
 });

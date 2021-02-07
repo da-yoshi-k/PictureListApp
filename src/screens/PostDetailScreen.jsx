@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import { dateToString } from '../utils';
 
 let postImageURL = null;
+let selfPost = false;
 
 export default function PostDetailScreen(props) {
   const { navigation, route } = props;
@@ -21,6 +22,9 @@ export default function PostDetailScreen(props) {
       const data = doc.data();
       if (data) {
         postImageURL = data.postImageURL;
+        if (currentUser) {
+          selfPost = data.postUser === currentUser.uid ? true : false;
+        }
         setPost({
           id: doc.id,
           postImageURL: data.postImageURL,
@@ -81,27 +85,30 @@ export default function PostDetailScreen(props) {
       <View style={styles.postBody}>
         <Text style={styles.bodyText}>{post && post.bodyText}</Text>
       </View>
-      <View style={styles.controlButton}>
-        <Button
-          label="編集"
-          onPress={() => {
-            navigation.navigate('PostEdit', {
-              id: post.id,
-              postImageURL: post.postImageURL,
-              postTitle: post.postTitle,
-              bodyText: post.bodyText,
-            });
-          }}
-        />
-        <Button
-          label="削除"
-          onPress={() => {
-            deletePost(post.id);
-          }}
-          buttonStyle={styles.deleteButton}
-          labelStyle={styles.deleteLabel}
-        />
-      </View>
+
+      {selfPost && (
+        <View style={styles.controlButton}>
+          <Button
+            label="編集"
+            onPress={() => {
+              navigation.navigate('PostEdit', {
+                id: post.id,
+                postImageURL: post.postImageURL,
+                postTitle: post.postTitle,
+                bodyText: post.bodyText,
+              });
+            }}
+          />
+          <Button
+            label="削除"
+            onPress={() => {
+              deletePost(post.id);
+            }}
+            buttonStyle={styles.deleteButton}
+            labelStyle={styles.deleteLabel}
+          />
+        </View>
+      )}
     </ScrollView>
   );
 }
