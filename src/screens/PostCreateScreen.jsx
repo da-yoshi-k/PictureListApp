@@ -81,8 +81,8 @@ export default function PostCreateScreen(props) {
               postImageURL: downloadURL,
               postImageFileName: filename,
               postUser: currentUser.uid,
-              postTitle,
-              bodyText,
+              postTitle: postTitle ? postTitle : 'タイトルなし',
+              bodyText: bodyText ? bodyText : '本文なし',
               createdAt: new Date(),
             })
             .then(() => {

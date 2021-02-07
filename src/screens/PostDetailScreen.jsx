@@ -20,8 +20,6 @@ export default function PostDetailScreen(props) {
     unsubscribe = ref.onSnapshot((doc) => {
       const data = doc.data();
       if (data) {
-        data.postTitle ? data.postTitle : (data.postTitle = 'タイトルなし');
-        data.bodyText ? data.bodyText : (data.bodyText = '本文なし');
         postImageURL = data.postImageURL;
         setPost({
           id: doc.id,
@@ -113,13 +111,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 32,
     paddingTop: 32,
-    paddingBottom: 500,
-  },
-  postPictureImg: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 300,
-    height: 240,
   },
   postTitle: {
     paddingBottom: 10,
@@ -127,6 +118,18 @@ const styles = StyleSheet.create({
   postTitleText: {
     fontSize: 20,
     color: '#666666',
+  },
+  postDate: {
+    paddingBottom: 5,
+  },
+  postImg: {
+    paddingBottom: 10,
+  },
+  postPictureImg: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 300,
+    height: 240,
   },
   postBody: {
     paddingBottom: 30,
@@ -136,6 +139,7 @@ const styles = StyleSheet.create({
   },
   controlButton: {
     flexDirection: 'row',
+    height: 100,
   },
   deleteButton: {
     backgroundColor: '#FFFFFF',

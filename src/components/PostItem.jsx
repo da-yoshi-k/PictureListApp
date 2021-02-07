@@ -26,11 +26,13 @@ export default function PostItem(props) {
             navigation.navigate('PostDetail', { id: item.id });
           }}
         >
-          <Image
-            style={styles.pictureImg}
-            resizeMode="contain"
-            source={{ uri: item.postImageURL }}
-          />
+          <View style={styles.postImage}>
+            <Image
+              style={styles.pictureImg}
+              resizeMode="contain"
+              source={{ uri: item.postImageURL }}
+            />
+          </View>
           <View style={styles.postTitle}>
             <Text>{item.postTitle}</Text>
           </View>
@@ -65,6 +67,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     height: 210,
   },
+  postImage: {
+    paddingBottom: 5,
+  },
   pictureImg: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -72,6 +77,7 @@ const styles = StyleSheet.create({
     height: 120,
   },
   postTitle: {
-    width: 150,
+    width: 160,
+    paddingHorizontal: 2,
   },
 });

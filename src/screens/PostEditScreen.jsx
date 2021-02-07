@@ -6,11 +6,9 @@ import firebase from 'firebase';
 import Button from '../components/Button';
 import { translationErrors } from '../utils';
 
-const img = require('../../assets/sample.jpg');
-
 export default function PostEditScreen(props) {
   const { navigation, route } = props;
-  const { id, postTitle, bodyText } = route.params;
+  const { id, postImageURL, postTitle, bodyText } = route.params;
   const [title, setTitle] = useState(postTitle);
   const [body, setBody] = useState(bodyText);
 
@@ -27,14 +25,15 @@ export default function PostEditScreen(props) {
 
   function handlePress() {
     const { currentUser } = firebase.auth();
+    // 投稿の保存
     const db = firebase.firestore();
     const ref = db.collection('posts').doc(id);
     ref
       .set(
         {
           postUser: currentUser.uid,
-          postTitle: title,
-          bodyText: body,
+          postTitle: title ? title : 'タイトルなし',
+          bodyText: body ? body : '本文なし',
         },
         { merge: true }
       )
@@ -50,11 +49,10 @@ export default function PostEditScreen(props) {
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <View style={styles.postImg}>
-        <Text>写真を登録してください</Text>
         <Image
           style={styles.postPictureImg}
           resizeMode="contain"
-          source={img}
+          source={{ uri: postImageURL }}
         />
       </View>
       <View style={styles.postTitle}>
