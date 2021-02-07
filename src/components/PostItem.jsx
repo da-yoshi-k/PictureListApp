@@ -36,7 +36,7 @@ export default function PostItem(props) {
           <View style={styles.postTitle}>
             <Text>{item.postTitle}</Text>
           </View>
-          <Text>☺ yamada taro</Text>
+          <Text>{item.userName}</Text>
           <Text>{dateToString(item.createdAt)}</Text>
         </TouchableOpacity>
       )}
@@ -51,6 +51,7 @@ PostItem.propTypes = {
     shape({
       id: string,
       postImageURL: string,
+      userName: string,
       postTitle: string,
       bodyText: string,
       createdAt: instanceOf(Date),

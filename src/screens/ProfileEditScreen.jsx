@@ -12,7 +12,6 @@ export default function ProfileEditScreen(props) {
   const [name, setName] = useState(userName);
 
   function handlePress() {
-    const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     const ref = db.collection('users').doc(id);
     ref

@@ -9,6 +9,19 @@ export default function MyPictureScreen(props) {
   const { navigation } = props;
   const { currentUser } = firebase.auth();
   const [posts, setPosts] = useState([]);
+  const [userName, setUserName] = useState('');
+
+  function userSearch(userId) {
+    const db = firebase.firestore();
+    const ref = db.collectionGroup('users').where('userId', '==', userId);
+    ref.onSnapshot((snapshot) => {
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        setUserName(data.userName);
+      });
+    });
+    return;
+  }
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -25,9 +38,11 @@ export default function MyPictureScreen(props) {
           snapshot.forEach((doc) => {
             const data = doc.data();
             if (data) {
+              userSearch(data.postUser);
               userPosts.push({
                 id: doc.id,
                 postImageURL: data.postImageURL,
+                userName: userName,
                 postTitle: data.postTitle,
                 bodyText: data.bodyText,
                 createdAt: data.createdAt.toDate(),
@@ -38,7 +53,6 @@ export default function MyPictureScreen(props) {
         },
         (error) => {
           Alert.alert(error.toString());
-          console.log(error.toString());
         }
       );
     }

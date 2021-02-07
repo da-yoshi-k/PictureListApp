@@ -13,29 +13,29 @@ export default function MyPictureScreen(props) {
   useEffect(() => {
     const db = firebase.firestore();
     let unsubscribe = () => {};
-    console.log(currentUser.uid);
-    const ref = db
-      .collectionGroup('users')
-      .where('userId', '==', `${currentUser.uid}`);
-    unsubscribe = ref.onSnapshot(
-      (snapshot) => {
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data) {
-            setUser({
-              id: doc.id,
-              userName: data.userName,
-              createdAt: data.createdAt.toDate(),
-              userIcon: data.userIcon,
-            });
-          }
-        });
-      },
-      (error) => {
-        console.log(error);
-        Alert.alert('データの読み込みに失敗しました。');
-      }
-    );
+    if (currentUser) {
+      const ref = db
+        .collectionGroup('users')
+        .where('userId', '==', `${currentUser.uid}`);
+      unsubscribe = ref.onSnapshot(
+        (snapshot) => {
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data) {
+              setUser({
+                id: doc.id,
+                userName: data.userName,
+                createdAt: data.createdAt.toDate(),
+                userIcon: data.userIcon,
+              });
+            }
+          });
+        },
+        (error) => {
+          Alert.alert('データの読み込みに失敗しました。');
+        }
+      );
+    }
     return unsubscribe;
   }, []);
 

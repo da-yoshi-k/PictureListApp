@@ -13,6 +13,19 @@ export default function PostDetailScreen(props) {
   const { id } = route.params;
   const [post, setPost] = useState(null);
   const { currentUser } = firebase.auth();
+  const [userName, setUserName] = useState('');
+
+  function userSearch(userId) {
+    const db = firebase.firestore();
+    const ref = db.collectionGroup('users').where('userId', '==', userId);
+    ref.onSnapshot((snapshot) => {
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        setUserName(data.userName);
+      });
+    });
+    return;
+  }
 
   useEffect(() => {
     let unsubscribe = () => {};
@@ -25,10 +38,11 @@ export default function PostDetailScreen(props) {
         if (currentUser) {
           selfPost = data.postUser === currentUser.uid ? true : false;
         }
+        userSearch(data.postUser);
         setPost({
           id: doc.id,
           postImageURL: data.postImageURL,
-          postUser: data.postUser,
+          userName: userName,
           postTitle: data.postTitle,
           bodyText: data.bodyText,
           createdAt: data.createdAt.toDate(),

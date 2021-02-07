@@ -9,6 +9,20 @@ export default function PictureListScreen(props) {
   const { navigation } = props;
   const { currentUser } = firebase.auth();
   const [allPosts, setAllPosts] = useState([]);
+  const [userName, setUserName] = useState('');
+
+  function userSearch(userId) {
+    const db = firebase.firestore();
+    const ref = db.collectionGroup('users').where('userId', '==', userId);
+    ref.onSnapshot((snapshot) => {
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        setUserName(data.userName);
+        return;
+      });
+    });
+    return;
+  }
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -19,9 +33,11 @@ export default function PictureListScreen(props) {
         const allUserPosts = [];
         snapshot.forEach((doc) => {
           const data = doc.data();
+          userSearch(data.postUser);
           allUserPosts.push({
             id: doc.id,
             postImageURL: data.postImageURL,
+            userName: userName,
             postTitle: data.postTitle,
             bodyText: data.bodyText,
             createdAt: data.createdAt.toDate(),
