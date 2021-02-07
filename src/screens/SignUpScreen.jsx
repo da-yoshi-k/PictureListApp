@@ -21,11 +21,26 @@ export default function SignUpScreen(props) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Profile' }],
-        });
+      .then((userCredential) => {
+        const db = firebase.firestore();
+        const ref = db.collection('users');
+        ref
+          .add({
+            userId: userCredential.user.uid,
+            userName: '(設定されていません)',
+            userIcon: 'default',
+            createdAt: new Date(),
+          })
+          .then(() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Profile' }],
+            });
+          })
+          .catch((error) => {
+            const errorMsg = translationErrors(error.code);
+            Alert.alert(errorMsg.title, errorMsg.description);
+          });
       })
       .catch((error) => {
         const errorMsg = translationErrors(error.code);

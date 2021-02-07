@@ -15,6 +15,7 @@ import PostCreateScreen from './src/screens/PostCreateScreen';
 import PostDetailScreen from './src/screens/PostDetailScreen';
 import PostEditScreen from './src/screens/PostEditScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import ProfileEditScreen from './src/screens/ProfileEditScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import Logo from './src/components/Logo';
@@ -81,6 +82,7 @@ function ProfileStacks() {
       screenOptions={screenOptions}
     >
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="ProfileEdit" component={ProfileEditScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="LogIn" component={LogInScreen} />
     </Stack.Navigator>
