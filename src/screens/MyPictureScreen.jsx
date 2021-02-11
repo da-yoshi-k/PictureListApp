@@ -4,24 +4,13 @@ import firebase from 'firebase';
 
 import CircleButton from '../components/CircleButton';
 import PostItem from '../components/PostItem';
+import Loading from '../components/Loading';
 
 export default function MyPictureScreen(props) {
   const { navigation } = props;
   const { currentUser } = firebase.auth();
   const [posts, setPosts] = useState([]);
-  const [userName, setUserName] = useState('');
-
-  function userSearch(userId) {
-    const db = firebase.firestore();
-    const ref = db.collectionGroup('users').where('userId', '==', userId);
-    ref.onSnapshot((snapshot) => {
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        setUserName(data.userName);
-      });
-    });
-    return;
-  }
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -38,18 +27,25 @@ export default function MyPictureScreen(props) {
           snapshot.forEach((doc) => {
             const data = doc.data();
             if (data) {
-              userSearch(data.postUser);
-              userPosts.push({
-                id: doc.id,
-                postImageURL: data.postImageURL,
-                userName: userName,
-                postTitle: data.postTitle,
-                bodyText: data.bodyText,
-                createdAt: data.createdAt.toDate(),
+              const userRef = db
+                .collection('users')
+                .where('userId', '==', data.postUser);
+              userRef.onSnapshot((userSnapshot) => {
+                userSnapshot.forEach((userDoc) => {
+                  const user = userDoc.data();
+                  userPosts.push({
+                    id: doc.id,
+                    postImageURL: data.postImageURL,
+                    userName: user.userName,
+                    postTitle: data.postTitle,
+                    bodyText: data.bodyText,
+                    createdAt: data.createdAt.toDate(),
+                  });
+                  setPosts(userPosts);
+                });
               });
             }
           });
-          setPosts(userPosts);
         },
         (error) => {
           Alert.alert(error.toString());
@@ -75,6 +71,7 @@ export default function MyPictureScreen(props) {
   if (posts.length === 0) {
     return (
       <View style={emptyStyles.container}>
+        <Loading isLoading={isLoading} />
         <Text style={emptyStyles.innerText}>まだ自分の投稿がありません</Text>
         <Text style={emptyStyles.innerText}>
           右下の＋ボタンから投稿してみよう！

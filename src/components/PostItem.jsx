@@ -36,7 +36,9 @@ export default function PostItem(props) {
           <View style={styles.postTitle}>
             <Text>{item.postTitle}</Text>
           </View>
-          <Text>{item.userName}</Text>
+          <View style={styles.userName}>
+            <Text>{item.userName}</Text>
+          </View>
           <Text>{dateToString(item.createdAt)}</Text>
         </TouchableOpacity>
       )}
@@ -78,6 +80,10 @@ const styles = StyleSheet.create({
     height: 120,
   },
   postTitle: {
+    width: 160,
+    paddingHorizontal: 2,
+  },
+  userName: {
     width: 160,
     paddingHorizontal: 2,
   },
