@@ -26,23 +26,21 @@ export default function MyPictureScreen(props) {
           const userPosts = [];
           snapshot.forEach((doc) => {
             const data = doc.data();
+            console.log(doc.id);
             if (data) {
-              const userRef = db
-                .collection('users')
-                .where('userId', '==', data.postUser);
-              userRef.onSnapshot((userSnapshot) => {
-                userSnapshot.forEach((userDoc) => {
-                  const user = userDoc.data();
-                  userPosts.push({
-                    id: doc.id,
-                    postImageURL: data.postImageURL,
-                    userName: user.userName,
-                    postTitle: data.postTitle,
-                    bodyText: data.bodyText,
-                    createdAt: data.createdAt.toDate(),
-                  });
-                  setPosts(userPosts);
+              const userRef = db.collection('users').doc(data.postUser);
+              userRef.onSnapshot((userDoc) => {
+                console.log(userDoc.id);
+                const user = userDoc.data();
+                userPosts.push({
+                  id: doc.id,
+                  postImageURL: data.postImageURL,
+                  userName: user.userName,
+                  postTitle: data.postTitle,
+                  bodyText: data.bodyText,
+                  createdAt: data.createdAt.toDate(),
                 });
+                setPosts(userPosts);
               });
             }
           });

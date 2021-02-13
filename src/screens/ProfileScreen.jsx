@@ -14,24 +14,21 @@ export default function MyPictureScreen(props) {
     const db = firebase.firestore();
     let unsubscribe = () => {};
     if (currentUser) {
-      const ref = db
-        .collectionGroup('users')
-        .where('userId', '==', `${currentUser.uid}`);
+      const ref = db.collection('users').doc(currentUser.uid);
       unsubscribe = ref.onSnapshot(
-        (snapshot) => {
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data) {
-              setUser({
-                id: doc.id,
-                userName: data.userName,
-                createdAt: data.createdAt.toDate(),
-                userIcon: data.userIcon,
-              });
-            }
-          });
+        (doc) => {
+          const data = doc.data();
+          if (data) {
+            setUser({
+              id: doc.id,
+              userName: data.userName,
+              createdAt: data.createdAt.toDate(),
+              // TODO アイコン機能の実装
+              // userIcon: data.userIcon,
+            });
+          }
         },
-        (error) => {
+        () => {
           Alert.alert('データの読み込みに失敗しました。');
         }
       );

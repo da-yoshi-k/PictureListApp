@@ -16,37 +16,35 @@ export default function PictureListScreen(props) {
     const db = firebase.firestore();
     let unsubscribe = () => {};
     setLoading(true);
+
     const ref = db.collection('posts').orderBy('createdAt', 'desc');
-    unsubscribe = ref.onSnapshot(
-      (snapshot) => {
-        const allUserPosts = [];
-        snapshot.forEach((doc) => {
+    unsubscribe = ref.onSnapshot((snapshot) => {
+      const allUserPosts = [];
+      snapshot.forEach(
+        (doc) => {
           const data = doc.data();
-          const userRef = db
-            .collection('users')
-            .where('userId', '==', data.postUser);
-          userRef.onSnapshot((userSnapshot) => {
-            userSnapshot.forEach((userDoc) => {
-              const user = userDoc.data();
-              allUserPosts.push({
-                id: doc.id,
-                postImageURL: data.postImageURL,
-                userName: user.userName,
-                postTitle: data.postTitle,
-                bodyText: data.bodyText,
-                createdAt: data.createdAt.toDate(),
-              });
+          const userRef = db.collection('users').doc(data.postUser);
+          userRef.onSnapshot((userDoc) => {
+            const user = userDoc.data();
+            allUserPosts.push({
+              id: doc.id,
+              postImageURL: data.postImageURL,
+              userName: user.userName,
+              postTitle: data.postTitle,
+              bodyText: data.bodyText,
+              createdAt: data.createdAt.toDate(),
             });
             setAllPosts(allUserPosts);
+            setLoading(false);
           });
-        });
-        setLoading(false);
-      },
-      () => {
-        setLoading(false);
-        Alert.alert('データの読み込みに失敗しました。');
-      }
-    );
+        },
+        () => {
+          setLoading(false);
+          Alert.alert('データの読み込みに失敗しました。');
+        }
+      );
+    });
+
     return unsubscribe;
   }, []);
 

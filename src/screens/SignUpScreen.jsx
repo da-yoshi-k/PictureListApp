@@ -23,10 +23,9 @@ export default function SignUpScreen(props) {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const db = firebase.firestore();
-        const ref = db.collection('users');
+        const ref = db.collection('users').doc(userCredential.user.uid);
         ref
-          .add({
-            userId: userCredential.user.uid,
+          .set({
             userName: '(設定されていません)',
             userIcon: 'default',
             createdAt: new Date(),
