@@ -21,7 +21,16 @@ export default function ProfileEditScreen(props) {
         },
         { merge: true }
       )
-      .then(() => {
+      .then(async () => {
+        const { currentUser } = firebase.auth();
+        const batch = db.batch();
+        const selfPostRef = await db
+          .collection(`users/${currentUser.uid}/posts`)
+          .get();
+        selfPostRef.docs.forEach((doc) => {
+          batch.update(doc.ref, { userName: name });
+        });
+        await batch.commit();
         navigation.goBack();
       })
       .catch((error) => {
