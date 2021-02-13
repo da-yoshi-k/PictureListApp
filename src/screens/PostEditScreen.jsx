@@ -27,11 +27,10 @@ export default function PostEditScreen(props) {
     const { currentUser } = firebase.auth();
     // 投稿の保存
     const db = firebase.firestore();
-    const ref = db.collection('posts').doc(id);
+    const ref = db.collectionGroup('posts').doc(id);
     ref
       .set(
         {
-          postUser: currentUser.uid,
           postTitle: title ? title : 'タイトルなし',
           bodyText: body ? body : '本文なし',
         },

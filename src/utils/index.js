@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import firebase from 'firebase';
 
 export function dateToString(date) {
   if (!date) {
@@ -36,17 +35,3 @@ export function translationErrors(code) {
   }
   return error;
 }
-
-export const searchUser = async (userId) => {
-  const db = await firebase
-    .firestore()
-    .collection('users')
-    .where('userId', '==', userId)
-    .onSnapshot((snapshot) => {
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        console.log(data.postUser);
-        return data.postUser;
-      });
-    });
-};

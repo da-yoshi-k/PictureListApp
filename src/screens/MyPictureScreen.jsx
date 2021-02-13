@@ -4,13 +4,11 @@ import firebase from 'firebase';
 
 import CircleButton from '../components/CircleButton';
 import PostItem from '../components/PostItem';
-import Loading from '../components/Loading';
 
 export default function MyPictureScreen(props) {
   const { navigation } = props;
   const { currentUser } = firebase.auth();
   const [posts, setPosts] = useState([]);
-  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -26,24 +24,18 @@ export default function MyPictureScreen(props) {
           const userPosts = [];
           snapshot.forEach((doc) => {
             const data = doc.data();
-            console.log(doc.id);
             if (data) {
-              const userRef = db.collection('users').doc(data.postUser);
-              userRef.onSnapshot((userDoc) => {
-                console.log(userDoc.id);
-                const user = userDoc.data();
-                userPosts.push({
-                  id: doc.id,
-                  postImageURL: data.postImageURL,
-                  userName: user.userName,
-                  postTitle: data.postTitle,
-                  bodyText: data.bodyText,
-                  createdAt: data.createdAt.toDate(),
-                });
-                setPosts(userPosts);
+              userPosts.push({
+                id: doc.id,
+                postImageURL: data.postImageURL,
+                userName: data.userName,
+                postTitle: data.postTitle,
+                bodyText: data.bodyText,
+                createdAt: data.createdAt.toDate(),
               });
             }
           });
+          setPosts(userPosts);
         },
         (error) => {
           Alert.alert(error.toString());
@@ -69,7 +61,6 @@ export default function MyPictureScreen(props) {
   if (posts.length === 0) {
     return (
       <View style={emptyStyles.container}>
-        <Loading isLoading={isLoading} />
         <Text style={emptyStyles.innerText}>まだ自分の投稿がありません</Text>
         <Text style={emptyStyles.innerText}>
           右下の＋ボタンから投稿してみよう！

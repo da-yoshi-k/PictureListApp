@@ -12,6 +12,7 @@ export default function PostCreateScreen(props) {
   const [imageBlob, setImageBlob] = useState(null);
   const [postTitle, setPostTitle] = useState('');
   const [bodyText, setBodyText] = useState('');
+  const [userName, setUserName] = useState('');
   const { navigation } = props;
 
   const pickImage = async () => {
@@ -38,6 +39,18 @@ export default function PostCreateScreen(props) {
       parent.setOptions({
         tabBarVisible: true,
       });
+  }, []);
+
+  useEffect(() => {
+    const { currentUser } = firebase.auth();
+    const db = firebase.firestore();
+    let unsubscribe = () => {};
+    const ref = db.collection('users').doc(currentUser.uid);
+    unsubscribe = ref.onSnapshot((doc) => {
+      const data = doc.data();
+      setUserName(data.userName);
+    });
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -75,12 +88,13 @@ export default function PostCreateScreen(props) {
         putTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
           // 投稿の保存
           const db = firebase.firestore();
-          const ref = db.collection('posts');
+          const ref = db.collection(`users/${currentUser.uid}/posts`);
           ref
             .add({
+              postUser: currentUser.uid,
+              userName: userName,
               postImageURL: downloadURL,
               postImageFileName: filename,
-              postUser: currentUser.uid,
               postTitle: postTitle ? postTitle : 'タイトルなし',
               bodyText: bodyText ? bodyText : '本文なし',
               createdAt: new Date(),

@@ -17,7 +17,7 @@ export default function PostDetailScreen(props) {
   useEffect(() => {
     let unsubscribe = () => {};
     const db = firebase.firestore();
-    const ref = db.collection('posts').doc(id);
+    const ref = db.collectionGroup('posts').doc(id);
     unsubscribe = ref.onSnapshot((doc) => {
       const data = doc.data();
       if (data) {
@@ -40,7 +40,7 @@ export default function PostDetailScreen(props) {
   function deletePost(id) {
     if (currentUser) {
       const db = firebase.firestore();
-      const ref = db.collection('posts').doc(id);
+      const ref = db.collectionGroup('posts').doc(id);
       Alert.alert('投稿を削除します', 'よろしいですか？', [
         {
           text: 'キャンセル',
