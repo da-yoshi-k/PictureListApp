@@ -113,14 +113,18 @@ export default function PostCreateScreen(props) {
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
+      <View style={styles.description}>
+        <Text style={styles.descriptionText}>
+          投稿する写真を選択してください
+        </Text>
+      </View>
+      <Button
+        label={'写真の選択'}
+        onPress={pickImage}
+        buttonStyle={styles.imageButton}
+        labelStyle={styles.imageLabel}
+      />
       <View style={styles.postImg}>
-        <Text>投稿する写真</Text>
-        <Button
-          label={'写真の選択'}
-          onPress={pickImage}
-          buttonStyle={styles.imageButton}
-          labelStyle={styles.imageLabel}
-        />
         {image && (
           <Image
             style={styles.postPictureImg}
@@ -163,11 +167,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     paddingVertical: 10,
   },
+  description: {
+    paddingVertical: 10,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: '#666666',
+  },
   imageButton: {
     backgroundColor: '#FFFFFF',
   },
   imageLabel: {
     color: '#FFA500',
+  },
+  postImg: {
+    paddingBottom: 10,
   },
   postPictureImg: {
     justifyContent: 'center',
@@ -175,7 +189,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 240,
   },
-  postTitle: { paddingBottom: 10 },
+  postTitle: { paddingVertical: 10 },
   inputTitle: {
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.2)',

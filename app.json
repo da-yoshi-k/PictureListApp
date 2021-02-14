@@ -13,7 +13,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -21,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash.png",
         "backgroundColor": "#F5D97E"
-      }
+      },
+      "package": "com.dayoshik.PictureListApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
