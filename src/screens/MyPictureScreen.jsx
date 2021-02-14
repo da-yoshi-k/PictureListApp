@@ -27,6 +27,7 @@ export default function MyPictureScreen(props) {
             if (data) {
               userPosts.push({
                 id: doc.id,
+                postUser: data.postUser,
                 postImageURL: data.postImageURL,
                 userName: data.userName,
                 postTitle: data.postTitle,

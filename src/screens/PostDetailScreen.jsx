@@ -10,14 +10,14 @@ let selfPost = false;
 
 export default function PostDetailScreen(props) {
   const { navigation, route } = props;
-  const { id } = route.params;
+  const { id, userId } = route.params;
   const [post, setPost] = useState(null);
   const { currentUser } = firebase.auth();
 
   useEffect(() => {
     let unsubscribe = () => {};
     const db = firebase.firestore();
-    const ref = db.collectionGroup('posts').doc(id);
+    const ref = db.collection(`users/${userId}/posts`).doc(id);
     unsubscribe = ref.onSnapshot((doc) => {
       const data = doc.data();
       if (data) {
@@ -27,8 +27,10 @@ export default function PostDetailScreen(props) {
         }
         setPost({
           id: doc.id,
+          postUser: data.postUser,
           postImageURL: data.postImageURL,
           postTitle: data.postTitle,
+          userName: data.userName,
           bodyText: data.bodyText,
           createdAt: data.createdAt.toDate(),
         });
@@ -37,10 +39,10 @@ export default function PostDetailScreen(props) {
     return unsubscribe;
   }, []);
 
-  function deletePost(id) {
+  function deletePost(id, userId) {
     if (currentUser) {
       const db = firebase.firestore();
-      const ref = db.collectionGroup('posts').doc(id);
+      const ref = db.collection(`users/${userId}/posts`).doc(id);
       Alert.alert('投稿を削除します', 'よろしいですか？', [
         {
           text: 'キャンセル',
@@ -69,6 +71,9 @@ export default function PostDetailScreen(props) {
       <View style={styles.postTitle}>
         <Text style={styles.postTitleText}>{post && post.postTitle}</Text>
       </View>
+      <View style={styles.userName}>
+        <Text style={styles.userNameText}>{post && post.userName}</Text>
+      </View>
       <View style={styles.postDate}>
         <Text style={styles.postDateText}>
           {post && dateToString(post.createdAt)}
@@ -92,6 +97,7 @@ export default function PostDetailScreen(props) {
             onPress={() => {
               navigation.navigate('PostEdit', {
                 id: post.id,
+                postUser: post.postUser,
                 postImageURL: post.postImageURL,
                 postTitle: post.postTitle,
                 bodyText: post.bodyText,
@@ -101,7 +107,7 @@ export default function PostDetailScreen(props) {
           <Button
             label="削除"
             onPress={() => {
-              deletePost(post.id);
+              deletePost(post.id, post.postUser);
             }}
             buttonStyle={styles.deleteButton}
             labelStyle={styles.deleteLabel}
@@ -123,6 +129,13 @@ const styles = StyleSheet.create({
   },
   postTitleText: {
     fontSize: 20,
+    color: '#666666',
+  },
+  userName: {
+    paddingBottom: 5,
+  },
+  userName: {
+    fontSize: 14,
     color: '#666666',
   },
   postDate: {

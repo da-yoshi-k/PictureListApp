@@ -23,7 +23,10 @@ export default function PostItem(props) {
         <TouchableOpacity
           style={styles.postItem}
           onPress={() => {
-            navigation.navigate('PostDetail', { id: item.id });
+            navigation.navigate('PostDetail', {
+              id: item.id,
+              userId: item.postUser,
+            });
           }}
         >
           <View style={styles.postImage}>
@@ -52,6 +55,7 @@ PostItem.propTypes = {
   posts: arrayOf(
     shape({
       id: string,
+      postUser: string,
       postImageURL: string,
       userName: string,
       postTitle: string,

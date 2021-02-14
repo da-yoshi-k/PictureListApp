@@ -8,9 +8,10 @@ import { translationErrors } from '../utils';
 
 export default function PostEditScreen(props) {
   const { navigation, route } = props;
-  const { id, postImageURL, postTitle, bodyText } = route.params;
+  const { id, postUser, postImageURL, postTitle, bodyText } = route.params;
   const [title, setTitle] = useState(postTitle);
   const [body, setBody] = useState(bodyText);
+  const [userId, setUserId] = useState(postUser);
 
   useEffect(() => {
     const parent = props.navigation.dangerouslyGetParent();
@@ -24,10 +25,9 @@ export default function PostEditScreen(props) {
   }, []);
 
   function handlePress() {
-    const { currentUser } = firebase.auth();
     // 投稿の保存
     const db = firebase.firestore();
-    const ref = db.collectionGroup('posts').doc(id);
+    const ref = db.collection(`users/${userId}/posts`).doc(id);
     ref
       .set(
         {

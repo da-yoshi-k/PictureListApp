@@ -21,6 +21,7 @@ export default function PictureListScreen(props) {
           const data = doc.data();
           allUserPosts.push({
             id: doc.id,
+            postUser: data.postUser,
             postImageURL: data.postImageURL,
             userName: data.userName,
             postTitle: data.postTitle,
