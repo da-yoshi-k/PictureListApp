@@ -1,8 +1,28 @@
 # アプリの説明
 
 react-nativeの練習用アプリです。
-スマートフォン内の写真・写真のメモをアップロードするアプリケーションとしています。
+スマートフォン内の写真・写真のメモをアップロードするアプリケーションです。
 
-## 使用している技術
+## 使用している技術(バージョン情報はpackage.json参照)
 
-開発が完了し次第入力します。
+- React Native
+
+- Expo
+
+- React Navigation
+
+  - Stack
+
+  - Tab
+
+- Firebase
+
+  - Firebase Authentication
+  - Cloud Firestore
+  - Cloud Storage
+
+- ESLint
+
+- Prettier
+
+- expo/vector-icons
